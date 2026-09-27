@@ -1,20 +1,20 @@
-name: Simple Automation Order
+name: Custom Web Automation Worker
 
 on:
   workflow_dispatch:
     inputs:
       service_type:
-        description: 'Select Service Type'
+        description: 'Select Action Type'
         required: true
         type: choice
         options:
-          - Followers
-          - Likes
-        default: 'Followers'
+          - Follow
+          - Claps_Likes
+        default: 'Follow'
       target_input:
-        description: 'Enter Username (for Followers) OR Post URL (for Likes)'
+        description: 'Enter Target Profile or Post URL (Direct Link)'
         required: true
-        default: 'instagram'
+        default: 'https://medium.com/'
       action_count:
         description: 'How many actions to perform?'
         required: true
