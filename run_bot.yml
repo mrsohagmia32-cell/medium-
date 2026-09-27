@@ -1,0 +1,49 @@
+name: Simple Automation Order
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_type:
+        description: 'Select Service Type'
+        required: true
+        type: choice
+        options:
+          - Followers
+          - Likes
+        default: 'Followers'
+      target_input:
+        description: 'Enter Username (for Followers) OR Post URL (for Likes)'
+        required: true
+        default: 'instagram'
+      action_count:
+        description: 'How many actions to perform?'
+        required: true
+        default: '1'
+
+jobs:
+  process_order:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install playwright
+        playwright install chromium
+
+    - name: Run Order Script
+      env:
+        SERVICE_TYPE: ${{ github.event.inputs.service_type }}
+        TARGET_INPUT: ${{ github.event.inputs.target_input }}
+        ACTION_COUNT: ${{ github.event.inputs.action_count }}
+        BOT_COOKIES: ${{ secrets.BOT_COOKIES }}
+      run: |
+        python main.py
